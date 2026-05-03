@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "google-flights": {
+      "type": "stdio",
+      "command": "${projectRoot}/scripts/start-flights-mcp.sh",
+      "args": []
+    }
+  }
+}

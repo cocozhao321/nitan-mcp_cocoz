@@ -1,10 +1,11 @@
-## Nitan MCP
+## Nitan MCP (cocozhao321's fork)
 
-> **Project Homepage:** [https://nitan.ai/mcp](https://nitan.ai/mcp)
+> Personal fork of [nitan-mcp](https://nitan.ai/mcp) — the dedicated MCP server for [uscardforum.com](https://www.uscardforum.com/)
 
-[论坛开发讨论贴](https://www.uscardforum.com/t/topic/450599)
+### What this fork adds
 
-This is a heavy modified version of [Discourse MCP](https://github.com/discourse/discourse-mcp). It will be a dedicated MCP client for https://www.uscardforum.com/
+- **Google Flights integration** — when Claude reads a forum post with a flight deal, it automatically offers to search live prices via Google Flights (powered by SerpAPI)
+- **`.mcp.json`** — project-level MCP config so Claude Code auto-configures the flight server for anyone who clones this repo
 
 ### Quick Installation
 
@@ -375,6 +376,42 @@ Use optional env `"TIMEZONE": "America/New_York"` if you want a timezone differe
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 ```
 
+
+## Google Flights MCP (Add-on)
+
+This project includes an optional **Google Flights MCP server** so you can search flights directly from Claude after spotting a travel deal on uscardforum.com.
+
+### Setup
+
+1. Install the flight server into the project venv:
+
+```bash
+pip install "git+https://github.com/HaroldLeo/google-flights-mcp.git"
+```
+
+2. Copy `.env.example` to `.env` and add your [SerpAPI key](https://serpapi.com/manage-api-key):
+
+```bash
+cp .env.example .env
+# edit .env and set SERPAPI_API_KEY=your_key_here
+```
+
+3. The `.mcp.json` in this repo will auto-configure Claude Code to use the server. When you open the project, Claude Code will prompt you to enable `google-flights`.
+
+### Available tools
+
+- `search_one_way_flights` — search one-way flights by date
+- `search_round_trip_flights` — search round-trip flights with stop options
+- `search_round_trips_in_date_range` — find cheapest date combinations
+- `search_flights_by_airline` — filter by carrier or alliance
+- `get_cheapest_flights` — get lowest-price options
+- `find_airports` — look up airport codes
+
+### Notes
+
+- Requires a [SerpAPI](https://serpapi.com) key (250 free searches/month on the free tier)
+- `.env` is gitignored — never commit your key
+- `.env.example` is committed as a template for contributors
 
 ## Original README
 [Discourse MCP](https://github.com/discourse/discourse-mcp/blob/main/README.md)

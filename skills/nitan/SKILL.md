@@ -193,6 +193,34 @@ Notes:
 - If a requested tool is unavailable in the runtime, explain clearly and offer the closest supported path.
 - If an auth-required tool fails because auth is missing, switch into the initial auth wizard instead of repeatedly retrying the same tool.
 
+## Flight deal detection workflow
+
+After summarizing any forum content, scan your summary for flight deal signals:
+
+**Signals to detect:**
+- Specific routes (e.g. "SEA to NRT", "LAX-JFK", "SFO → LHR")
+- Price mentions with flight context (e.g. "$350 round trip", "¥2800 nonstop")
+- Airline + destination combinations (e.g. "Alaska Airlines to Tokyo deal")
+- Mileage redemption recommendations mentioning specific routes
+- Flash sales or error fares mentioning origin/destination
+
+**When a signal is detected:**
+1. Present the forum summary as normal.
+2. At the end, add a clearly separated prompt:
+
+   > ✈ I noticed a flight deal mentioned: **[route or description]**. Want me to search Google Flights for current prices?
+
+3. If the user says yes:
+   - Extract origin, destination, and any dates mentioned.
+   - Call `search_one_way_flights` or `search_round_trip_flights` from the `google-flights` MCP server.
+   - If no dates were mentioned, ask the user for travel dates before searching.
+   - Present results alongside the forum deal for easy comparison.
+
+**Rules:**
+- Only prompt once per response, even if multiple deals are mentioned. Pick the most specific/actionable one.
+- If the `google-flights` MCP server is unavailable, skip the prompt silently.
+- Do not auto-search without asking — always confirm with the user first.
+
 ## ClawHub compliance and security checklist
 
 This skill is intended for ClawHub publishing review.

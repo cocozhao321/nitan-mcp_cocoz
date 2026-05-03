@@ -1,7 +1,6 @@
 dist/*
 node_modules/*
 .claude/*
-.mcp.json
 my-login.json
 cookies.json
 dist-skill/*
@@ -9,3 +8,4 @@ dist-skill/*
 .venv/*
 .playwright-mcp/*
 .cursor/*
+.env
