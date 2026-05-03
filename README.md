@@ -2,10 +2,14 @@
 
 > Personal fork of [nitan-mcp](https://nitan.ai/mcp) — the dedicated MCP server for [uscardforum.com](https://www.uscardforum.com/)
 
+This fork closes the loop on travel deal discovery: spot a deal on uscardforum → Claude automatically offers to search live flight or hotel prices without leaving the conversation.
+
+> **Note:** The two travel deal workflows below require **Claude Code**. The core nitan-mcp server remains compatible with any MCP client.
+
 ### What this fork adds
 
-- **Google Flights integration** — when Claude reads a forum post with a flight deal, it automatically offers to search live prices via Google Flights (powered by SerpAPI)
-- **Gondola hotel search integration** — when Claude detects a hotel deal, it offers to search live rates and compare cash vs. points across Marriott, Hilton, Hyatt, IHG and more (no API key required)
+- **Flight deal workflow** — when Claude reads a forum post mentioning a flight deal or route, it automatically offers to search live prices via Google Flights (powered by SerpAPI)
+- **Hotel deal workflow** — when Claude detects a hotel deal, it offers to search live rates and compare cash vs. points across Marriott, Hilton, Hyatt, IHG and more via Gondola (no API key required)
 - **`.mcp.json`** — project-level MCP config so Claude Code auto-configures both servers for anyone who clones this repo
 
 ### Quick Installation
