@@ -4,6 +4,10 @@
       "type": "stdio",
       "command": "${projectRoot}/scripts/start-flights-mcp.sh",
       "args": []
+    },
+    "gondola": {
+      "type": "http",
+      "url": "https://mcp.gondola.ai/mcp"
     }
   }
 }

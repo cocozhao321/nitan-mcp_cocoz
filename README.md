@@ -5,7 +5,8 @@
 ### What this fork adds
 
 - **Google Flights integration** — when Claude reads a forum post with a flight deal, it automatically offers to search live prices via Google Flights (powered by SerpAPI)
-- **`.mcp.json`** — project-level MCP config so Claude Code auto-configures the flight server for anyone who clones this repo
+- **Gondola hotel search integration** — when Claude detects a hotel deal, it offers to search live rates and compare cash vs. points across Marriott, Hilton, Hyatt, IHG and more (no API key required)
+- **`.mcp.json`** — project-level MCP config so Claude Code auto-configures both servers for anyone who clones this repo
 
 ### Quick Installation
 

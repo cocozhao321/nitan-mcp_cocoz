@@ -193,9 +193,11 @@ Notes:
 - If a requested tool is unavailable in the runtime, explain clearly and offer the closest supported path.
 - If an auth-required tool fails because auth is missing, switch into the initial auth wizard instead of repeatedly retrying the same tool.
 
-## Flight deal detection workflow
+## Travel deal detection workflow
 
-After summarizing any forum content, scan your summary for flight deal signals:
+After summarizing any forum content, scan your summary for travel deal signals and offer to search live prices via the appropriate MCP server.
+
+### Flight deal detection
 
 **Signals to detect:**
 - Specific routes (e.g. "SEA to NRT", "LAX-JFK", "SFO → LHR")
@@ -204,21 +206,44 @@ After summarizing any forum content, scan your summary for flight deal signals:
 - Mileage redemption recommendations mentioning specific routes
 - Flash sales or error fares mentioning origin/destination
 
-**When a signal is detected:**
-1. Present the forum summary as normal.
-2. At the end, add a clearly separated prompt:
+**When detected**, append at the end of your summary:
 
-   > ✈ I noticed a flight deal mentioned: **[route or description]**. Want me to search Google Flights for current prices?
+> ✈ I noticed a flight deal mentioned: **[route or description]**. Want me to search Google Flights for current prices?
 
-3. If the user says yes:
-   - Extract origin, destination, and any dates mentioned.
-   - Call `search_one_way_flights` or `search_round_trip_flights` from the `google-flights` MCP server.
-   - If no dates were mentioned, ask the user for travel dates before searching.
-   - Present results alongside the forum deal for easy comparison.
+If yes: extract origin, destination, and dates, then call `search_one_way_flights` or `search_round_trip_flights` from the `google-flights` MCP. Ask for dates if not mentioned.
 
-**Rules:**
-- Only prompt once per response, even if multiple deals are mentioned. Pick the most specific/actionable one.
-- If the `google-flights` MCP server is unavailable, skip the prompt silently.
+### Hotel deal detection
+
+**Signals to detect:**
+- Hotel name + price or points mentions (e.g. "Hyatt Regency 15k points", "Marriott $89/night")
+- Award redemption tips for specific properties
+- Credit card hotel benefits or free night cert recommendations
+- Flash sales or limited-time hotel rates
+
+**When detected**, append at the end of your summary:
+
+> 🏨 I noticed a hotel deal mentioned: **[hotel or description]**. Want me to search live rates via Gondola?
+
+If yes: extract hotel name/chain, destination, and dates, then call `search_hotels` or `compare_rates` from the `gondola` MCP. Ask for check-in/check-out dates if not mentioned.
+
+### Gondola rate limit handling
+
+Gondola allows 20 requests per MCP session. When a Gondola call fails with a rate limit or session error:
+
+1. Stop retrying immediately.
+2. Tell the user clearly:
+
+   > 🏨 Gondola's session limit (20 requests) has been reached. To continue, restart the Gondola MCP connection:
+   > 1. Type `/mcp` in Claude Code
+   > 2. Find `gondola` in the list and click **Restart**
+   > 3. Come back and ask again — the new session starts fresh
+
+3. Do not attempt the hotel search again until the user confirms they have restarted.
+4. After restart, retry the exact same search automatically without asking again.
+
+### Rules (both)
+- Only prompt once per response. If both a flight and hotel deal are detected, prompt for both in one message.
+- If the relevant MCP server is unavailable, skip that prompt silently.
 - Do not auto-search without asking — always confirm with the user first.
 
 ## ClawHub compliance and security checklist
